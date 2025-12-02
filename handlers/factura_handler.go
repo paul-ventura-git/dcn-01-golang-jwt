@@ -13,12 +13,25 @@ type FacturaInput struct {
 	ProductoIDs []uint `json:"producto_ids"`
 }
 
+// CrearFactura godoc
+// @Summary Crear una factura
+// @Description Crea una factura a partir de un cliente y una lista de productos
+// @Tags Facturas
+// @Accept json
+// @Produce json
+// @Param factura body FacturaInput true "Datos para crear factura"
+// @Success 200 {object} models.Factura
+// @Failure 400 {object} map[string]string
+// @Router /facturas [post]
 func CrearFactura(w http.ResponseWriter, r *http.Request) {
 	var input FacturaInput
 	json.NewDecoder(r.Body).Decode(&input)
 
 	var cliente models.Cliente
-	database.DB.First(&cliente, input.ClienteID)
+	if err := database.DB.First(&cliente, input.ClienteID).Error; err != nil {
+		http.Error(w, "Cliente no encontrado", http.StatusBadRequest)
+		return
+	}
 
 	var productos []models.Producto
 	database.DB.Find(&productos, input.ProductoIDs)
@@ -38,6 +51,13 @@ func CrearFactura(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(factura)
 }
 
+// ListarFacturas godoc
+// @Summary Listar facturas
+// @Description Obtiene todas las facturas con sus relaciones cargadas
+// @Tags Facturas
+// @Produce json
+// @Success 200 {array} models.Factura
+// @Router /facturas [get]
 func ListarFacturas(w http.ResponseWriter, r *http.Request) {
 	var facturas []models.Factura
 	database.DB.Preload("Cliente").Preload("Productos").Find(&facturas)

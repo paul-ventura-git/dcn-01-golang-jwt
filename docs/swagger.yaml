@@ -1,5 +1,14 @@
 basePath: /
 definitions:
+  handlers.FacturaInput:
+    properties:
+      cliente_id:
+        type: integer
+      producto_ids:
+        items:
+          type: integer
+        type: array
+    type: object
   handlers.LoginInput:
     properties:
       email:
@@ -22,6 +31,30 @@ definitions:
         type: integer
       nombre:
         type: string
+    type: object
+  models.Factura:
+    properties:
+      cliente:
+        $ref: '#/definitions/models.Cliente'
+      cliente_id:
+        type: integer
+      id:
+        type: integer
+      productos:
+        items:
+          $ref: '#/definitions/models.Producto'
+        type: array
+      total:
+        type: number
+    type: object
+  models.Producto:
+    properties:
+      id:
+        type: integer
+      nombre:
+        type: string
+      precio:
+        type: number
     type: object
 host: localhost:8080
 info:
@@ -65,6 +98,48 @@ paths:
       security:
       - Bearer: []
       summary: Crea un cliente
+  /facturas:
+    get:
+      description: Obtiene todas las facturas con sus relaciones cargadas
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Factura'
+            type: array
+      summary: Listar facturas
+      tags:
+      - Facturas
+    post:
+      consumes:
+      - application/json
+      description: Crea una factura a partir de un cliente y una lista de productos
+      parameters:
+      - description: Datos para crear factura
+        in: body
+        name: factura
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.FacturaInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Factura'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Crear una factura
+      tags:
+      - Facturas
   /login:
     post:
       consumes:
@@ -87,6 +162,42 @@ paths:
               type: string
             type: object
       summary: Login
+  /productos:
+    get:
+      description: Retorna todos los productos guardados
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Producto'
+            type: array
+      summary: Listar productos
+      tags:
+      - Productos
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo producto en la base de datos
+      parameters:
+      - description: Datos del producto
+        in: body
+        name: producto
+        required: true
+        schema:
+          $ref: '#/definitions/models.Producto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Producto'
+      summary: Crear un producto
+      tags:
+      - Productos
   /register:
     post:
       consumes:

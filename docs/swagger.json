@@ -67,6 +67,70 @@
                 }
             }
         },
+        "/facturas": {
+            "get": {
+                "description": "Obtiene todas las facturas con sus relaciones cargadas",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Facturas"
+                ],
+                "summary": "Listar facturas",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Factura"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Crea una factura a partir de un cliente y una lista de productos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Facturas"
+                ],
+                "summary": "Crear una factura",
+                "parameters": [
+                    {
+                        "description": "Datos para crear factura",
+                        "name": "factura",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.FacturaInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Factura"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "Retorna un JWT válido",
@@ -96,6 +160,61 @@
                             "additionalProperties": {
                                 "type": "string"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/productos": {
+            "get": {
+                "description": "Retorna todos los productos guardados",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Listar productos",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Producto"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Crea un nuevo producto en la base de datos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Crear un producto",
+                "parameters": [
+                    {
+                        "description": "Datos del producto",
+                        "name": "producto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Producto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Producto"
                         }
                     }
                 }
@@ -135,6 +254,20 @@
         }
     },
     "definitions": {
+        "handlers.FacturaInput": {
+            "type": "object",
+            "properties": {
+                "cliente_id": {
+                    "type": "integer"
+                },
+                "producto_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
         "handlers.LoginInput": {
             "type": "object",
             "properties": {
@@ -168,6 +301,43 @@
                 },
                 "nombre": {
                     "type": "string"
+                }
+            }
+        },
+        "models.Factura": {
+            "type": "object",
+            "properties": {
+                "cliente": {
+                    "$ref": "#/definitions/models.Cliente"
+                },
+                "cliente_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "productos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Producto"
+                    }
+                },
+                "total": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.Producto": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "nombre": {
+                    "type": "string"
+                },
+                "precio": {
+                    "type": "number"
                 }
             }
         }
