@@ -19,6 +19,14 @@ type LoginInput struct {
 	Password string `json:"password"`
 }
 
+// Register godoc
+// @Summary Registro de usuario
+// @Description Crea un nuevo usuario con email y password
+// @Accept  json
+// @Produce  json
+// @Param user body RegisterInput true "Datos de registro"
+// @Success 201 {object} map[string]interface{}
+// @Router /register [post]
 func Register(w http.ResponseWriter, r *http.Request) {
 	var input RegisterInput
 	json.NewDecoder(r.Body).Decode(&input)
@@ -36,6 +44,14 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"message": "Usuario creado"})
 }
 
+// Login godoc
+// @Summary Login
+// @Description Retorna un JWT válido
+// @Accept  json
+// @Produce  json
+// @Param user body LoginInput true "Credenciales"
+// @Success 200 {object} map[string]string
+// @Router /login [post]
 func Login(w http.ResponseWriter, r *http.Request) {
 	var input LoginInput
 	json.NewDecoder(r.Body).Decode(&input)

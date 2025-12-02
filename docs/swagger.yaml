@@ -1,0 +1,111 @@
+basePath: /
+definitions:
+  handlers.LoginInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  handlers.RegisterInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  models.Cliente:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      nombre:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API de ejemplo con Clientes, Productos y Facturas
+  title: Microservicio Go + GORM + JWT
+  version: "1.0"
+paths:
+  /clientes:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Cliente'
+            type: array
+      security:
+      - Bearer: []
+      summary: Lista clientes
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo cliente (requiere JWT)
+      parameters:
+      - description: Datos del cliente
+        in: body
+        name: cliente
+        required: true
+        schema:
+          $ref: '#/definitions/models.Cliente'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Cliente'
+      security:
+      - Bearer: []
+      summary: Crea un cliente
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Retorna un JWT válido
+      parameters:
+      - description: Credenciales
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo usuario con email y password
+      parameters:
+      - description: Datos de registro
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.RegisterInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Registro de usuario
+swagger: "2.0"

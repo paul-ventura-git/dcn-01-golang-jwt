@@ -4,12 +4,21 @@ import (
 	"log"
 	"net/http"
 
+	_ "microservice/docs" // IMPORTANTE: swagger docs
+
 	"microservice/database"
 	"microservice/handlers"
 	"microservice/middleware"
 	"microservice/models"
+
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
+// @title Microservicio Go + GORM + JWT
+// @version 1.0
+// @description API de ejemplo con Clientes, Productos y Facturas
+// @host localhost:8080
+// @BasePath /
 func main() {
 
 	database.Connect()
@@ -20,6 +29,9 @@ func main() {
 		&models.Producto{},
 		&models.Factura{},
 	)
+
+	// Swagger
+	http.Handle("/swagger/", httpSwagger.WrapHandler)
 
 	// Auth
 	http.HandleFunc("/register", handlers.Register)
