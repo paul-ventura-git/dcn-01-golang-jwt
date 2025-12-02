@@ -10,8 +10,9 @@ import (
 
 // CrearProducto godoc
 // @Summary Crear un producto
-// @Description Crea un nuevo producto en la base de datos
+// @Description Crea un nuevo producto en la base de datos (requiere JWT)
 // @Tags Productos
+// @Security Bearer
 // @Accept json
 // @Produce json
 // @Param producto body models.Producto true "Datos del producto"
@@ -27,8 +28,9 @@ func CrearProducto(w http.ResponseWriter, r *http.Request) {
 
 // ListarProductos godoc
 // @Summary Listar productos
-// @Description Retorna todos los productos guardados
+// @Description Retorna todos los productos guardados (requiere JWT)
 // @Tags Productos
+// @Security Bearer
 // @Produce json
 // @Success 200 {array} models.Producto
 // @Router /productos [get]

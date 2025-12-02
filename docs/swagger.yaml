@@ -65,6 +65,7 @@ info:
 paths:
   /clientes:
     get:
+      description: Obtiene todos los clientes (requiere JWT)
       produces:
       - application/json
       responses:
@@ -77,6 +78,8 @@ paths:
       security:
       - Bearer: []
       summary: Lista clientes
+      tags:
+      - Clientes
     post:
       consumes:
       - application/json
@@ -98,9 +101,11 @@ paths:
       security:
       - Bearer: []
       summary: Crea un cliente
+      tags:
+      - Clientes
   /facturas:
     get:
-      description: Obtiene todas las facturas con sus relaciones cargadas
+      description: Lista todas las facturas y sus relaciones (requiere JWT)
       produces:
       - application/json
       responses:
@@ -110,13 +115,15 @@ paths:
             items:
               $ref: '#/definitions/models.Factura'
             type: array
+      security:
+      - Bearer: []
       summary: Listar facturas
       tags:
       - Facturas
     post:
       consumes:
       - application/json
-      description: Crea una factura a partir de un cliente y una lista de productos
+      description: Crea una factura a partir de un cliente y productos (requiere JWT)
       parameters:
       - description: Datos para crear factura
         in: body
@@ -137,6 +144,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - Bearer: []
       summary: Crear una factura
       tags:
       - Facturas
@@ -164,7 +173,7 @@ paths:
       summary: Login
   /productos:
     get:
-      description: Retorna todos los productos guardados
+      description: Retorna todos los productos guardados (requiere JWT)
       produces:
       - application/json
       responses:
@@ -174,13 +183,15 @@ paths:
             items:
               $ref: '#/definitions/models.Producto'
             type: array
+      security:
+      - Bearer: []
       summary: Listar productos
       tags:
       - Productos
     post:
       consumes:
       - application/json
-      description: Crea un nuevo producto en la base de datos
+      description: Crea un nuevo producto en la base de datos (requiere JWT)
       parameters:
       - description: Datos del producto
         in: body
@@ -195,6 +206,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Producto'
+      security:
+      - Bearer: []
       summary: Crear un producto
       tags:
       - Productos

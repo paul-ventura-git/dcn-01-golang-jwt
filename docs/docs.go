@@ -22,8 +22,12 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
+                "description": "Obtiene todos los clientes (requiere JWT)",
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Clientes"
                 ],
                 "summary": "Lista clientes",
                 "responses": {
@@ -51,6 +55,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Clientes"
+                ],
                 "summary": "Crea un cliente",
                 "parameters": [
                     {
@@ -75,7 +82,12 @@ const docTemplate = `{
         },
         "/facturas": {
             "get": {
-                "description": "Obtiene todas las facturas con sus relaciones cargadas",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Lista todas las facturas y sus relaciones (requiere JWT)",
                 "produces": [
                     "application/json"
                 ],
@@ -96,7 +108,12 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Crea una factura a partir de un cliente y una lista de productos",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Crea una factura a partir de un cliente y productos (requiere JWT)",
                 "consumes": [
                     "application/json"
                 ],
@@ -173,7 +190,12 @@ const docTemplate = `{
         },
         "/productos": {
             "get": {
-                "description": "Retorna todos los productos guardados",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retorna todos los productos guardados (requiere JWT)",
                 "produces": [
                     "application/json"
                 ],
@@ -194,7 +216,12 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Crea un nuevo producto en la base de datos",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Crea un nuevo producto en la base de datos (requiere JWT)",
                 "consumes": [
                     "application/json"
                 ],

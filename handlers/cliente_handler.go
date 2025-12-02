@@ -11,6 +11,7 @@ import (
 // CrearCliente godoc
 // @Summary Crea un cliente
 // @Description Crea un nuevo cliente (requiere JWT)
+// @Tags Clientes
 // @Security Bearer
 // @Accept  json
 // @Produce  json
@@ -27,6 +28,8 @@ func CrearCliente(w http.ResponseWriter, r *http.Request) {
 
 // ListarClientes godoc
 // @Summary Lista clientes
+// @Description Obtiene todos los clientes (requiere JWT)
+// @Tags Clientes
 // @Security Bearer
 // @Produce  json
 // @Success 200 {array} models.Cliente

@@ -15,8 +15,9 @@ type FacturaInput struct {
 
 // CrearFactura godoc
 // @Summary Crear una factura
-// @Description Crea una factura a partir de un cliente y una lista de productos
+// @Description Crea una factura a partir de un cliente y productos (requiere JWT)
 // @Tags Facturas
+// @Security Bearer
 // @Accept json
 // @Produce json
 // @Param factura body FacturaInput true "Datos para crear factura"
@@ -53,8 +54,9 @@ func CrearFactura(w http.ResponseWriter, r *http.Request) {
 
 // ListarFacturas godoc
 // @Summary Listar facturas
-// @Description Obtiene todas las facturas con sus relaciones cargadas
+// @Description Lista todas las facturas y sus relaciones (requiere JWT)
 // @Tags Facturas
+// @Security Bearer
 // @Produce json
 // @Success 200 {array} models.Factura
 // @Router /facturas [get]
